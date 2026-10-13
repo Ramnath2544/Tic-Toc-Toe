@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic-Tac-Toe with Score</title>
+  <style>
+    /* CSS */
+    body {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      font-family: "Arial", sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .game-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .title {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      animation: titleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+      from {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      to {
+        text-shadow: 2px 2px 20px rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    /* Score Board Styling */
+    .score-board {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .score-x {
+      color: #4caf50;
+    }
+
+    .score-o {
+      color: #ff9800;
+    }
+
+    .status {
+      font-size: 22px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      height: 30px;
+      transition: color 0.3s ease;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .cell:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .cell.x {
+      color: #4caf50;
+      text-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+    }
+
+    .cell.o {
+      color: #ff9800;
+      text-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
+    }
+
+    .controls-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 12px 20px;
+      cursor: pointer;
+      border-radius: 25px;
+      color: white;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .reset-game-btn {
+      background: linear-gradient(145deg, #2196f3, #1976d2);
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+
+    .reset-game-btn:hover {
+      box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .clear-score-btn {
+      background: linear-gradient(145deg, #f44336, #d32f2f);
+      box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+    }
+
+    .clear-score-btn:hover {
+      box-shadow: 0 6px 20px rgba(244, 67, 54, 0.5);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HTML -->
+  <div class="game-container">
+    <div class="title">Tic-Tac-Toe</div>
+
+    <!-- Score Board -->
+    <div class="score-board">
+      <div class="score-x">Player X: <span class="js-score-x">0</span></div>
+      <div>Draws: <span class="js-score-draws">0</span></div>
+      <div class="score-o">Player O: <span class="js-score-o">0</span></div>
+    </div>
+
+    <div class="status js-status">Player X's Turn</div>
+
+    <div class="board js-board">
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+    </div>
+
+    <div class="controls-container">
+      <button class="btn reset-game-btn js-reset-button">Restart Game</button>
+      <button class="btn clear-score-btn js-clear-score-button">Clear Score</button>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript
+    const cells = document.querySelectorAll('.cell');
+    const statusText = document.querySelector('.js-status');
+    const resetButton = document.querySelector('.js-reset-button');
+    const clearScoreButton = document.querySelector('.js-clear-score-button');
+
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let currentPlayer = 'X';
+    let isGameActive = true;
+
+    // Load score from localStorage or set defaults
+    let score = JSON.parse(localStorage.getItem('ticTacToeScore')) || {
+      xWins: 0,
+      oWins: 0,
+      draws: 0
+    };
+
+    const winningConditions = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+      [0, 4, 8], [2, 4, 6]             // Diagonals
+    ];
+
+    // Initialize the score display on page load
+    updateScoreDisplay();
+
+    function updateScoreDisplay() {
+      document.querySelector('.js-score-x').innerText = score.xWins;
+      document.querySelector('.js-score-o').innerText = score.oWins;
+      document.querySelector('.js-score-draws').innerText = score.draws;
+    }
+
+    function handleCellClick(event) {
+      const clickedCell = event.target;
+      const cellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+      if (board[cellIndex] !== '' || !isGameActive) return;
+
+      updateCell(clickedCell, cellIndex);
+      checkWinner();
+    }
+
+    function updateCell(cell, index) {
+      board[index] = currentPlayer;
+      cell.innerText = currentPlayer;
+      cell.classList.add(currentPlayer.toLowerCase());
+    }
+
+    function changePlayer() {
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      statusText.innerText = `Player ${currentPlayer}'s Turn`;
+      statusText.style.color = 'white'; // Reset color for standard turn
+    }
+
+    function checkWinner() {
+      let roundWon = false;
+
+      for (let i = 0; i < winningConditions.length; i++) {
+        const [a, b, c] = winningConditions[i];
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          roundWon = true;
+          break;
+        }
+      }
+
+      if (roundWon) {
+        statusText.innerText = `🎉 Player ${currentPlayer} Wins!`;
+        statusText.style.color = currentPlayer === 'X' ? '#4caf50' : '#ff9800';
+        isGameActive = false;
+
+        // Update and save score
+        if (currentPlayer === 'X') score.xWins++;
+        else score.oWins++;
+
+        localStorage.setItem('ticTacToeScore', JSON.stringify(score));
+        updateScoreDisplay();
+        return;
+      }
+
+      const roundDraw = !board.includes('');
+      if (roundDraw) {
+        statusText.innerText = 'Game ended in a draw!';
+        statusText.style.color = '#ccc';
+        isGameActive = false;
+
+        // Update and save score
+        score.draws++;
+        localStorage.setItem('ticTacToeScore', JSON.stringify(score));
+        updateScoreDisplay();
+        return;
+      }
+
+      changePlayer();
+    }
+
+    function resetGame() {
+      board = ['', '', '', '', '', '', '', '', ''];
+      currentPlayer = 'X';
+      isGameActive = true;
+      statusText.innerText = `Player X's Turn`;
+      statusText.style.color = 'white';
+
+      cells.forEach(cell => {
+        cell.innerText = '';
+        cell.classList.remove('x', 'o');
+      });
+    }
+
+    function clearScore() {
+      score = { xWins: 0, oWins: 0, draws: 0 };
+      localStorage.removeItem('ticTacToeScore');
+      updateScoreDisplay();
+    }
+
+    // Event Listeners
+    cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    resetButton.addEventListener('click', resetGame);
+    clearScoreButton.addEventListener('click', clearScore);
+  </script>
+</body>
+
+</html>
